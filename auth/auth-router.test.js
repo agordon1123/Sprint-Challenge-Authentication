@@ -29,13 +29,12 @@ describe('router', () => {
         it('succesfully logs in a created user', () => {
             const body = { username: "test", password: "test" };
 
-            request(server).post('/api/auth/register').send(body).then(next => {
-                next;
+            request(server).post('/api/auth/register').send(body).then(() => {
+                return request(server).post('/api/auth/login').send(body).then(res => {
+                    expect(res.status).toBe(200);
+                });                
             });
 
-            return request(server).post('/api/auth/login').send(body).then(res => {
-                expect(res.status).toBe(200);
-            });
         });
 
         it('should return JSON', () => {
